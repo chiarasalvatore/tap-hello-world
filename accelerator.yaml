@@ -1,0 +1,54 @@
+accelerator:
+  displayName: Hello World
+  description: Hello World sample project for Spring Boot on Cloud Foundry
+  iconUrl: https://avatars.githubusercontent.com/u/621746?s=200&v=4
+  tags:
+  - java
+  - spring
+  - cloud-foundry
+
+  # options for the UI
+  options:
+  - name: deploymentType
+    inputType: select
+    choices:
+    - value: manifest
+      text: Cloud Foundry manifest.yml
+    - value: none
+      text: Skip  deployment configuration
+    defaultValue: manifest
+    required: true
+  - name: message
+    inputType: text
+    label: The message the app should display
+    description: The message will be prepended with the string 'Hello '
+    defaultValue: World
+    dependsOn:
+      name: deploymentType
+      value: manifest
+
+engine:
+  merge:
+    - include: [ "**" ]
+      exclude: [ "pom.xml", "README.md", "manifest.yml" ]
+    - include: [ "pom.xml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-world
+          with: "#artifactId"
+    - include: [ "manifest.yml" ]
+      condition: "#deploymentType == 'manifest'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-world
+          with: "#artifactId"
+        - text: World
+          with: "#message"
+    - include: [ "README.md"]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-world
+          with: "#artifactId"
