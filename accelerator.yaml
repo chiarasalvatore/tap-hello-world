@@ -1,12 +1,12 @@
 accelerator:
   displayName: Hello World
-  description: Hello World sample project for Spring Boot on Cloud Foundry
-  # iconUrl: https://avatars.githubusercontent.com/u/621746?s=200&v=4
+  description: Hello World sample project for Spring Boot
   iconUrl: https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/globe-icon.png
   tags:
   - java
   - spring
   - cloud-foundry
+  - tanzu
 
   # options for the UI
   options:
@@ -14,7 +14,9 @@ accelerator:
     inputType: select
     choices:
     - value: manifest
-      text: Cloud Foundry manifest.yml
+      text: Cloud Foundry manifest
+    - value: workload
+      text: TAP workload
     - value: none
       text: Skip  deployment configuration
     defaultValue: manifest
@@ -24,21 +26,25 @@ accelerator:
     label: The message the app should display
     description: The message will be prepended with the string 'Hello '
     defaultValue: World
-    dependsOn:
-      name: deploymentType
-      value: manifest
 
 engine:
   merge:
     - include: [ "**" ]
-      exclude: [ "pom.xml", "README.md", "manifest.yml" ]
+      exclude: [ "pom.xml", "README.md", "cloudfoundry/**", "tap/**" ]
     - include: [ "pom.xml" ]
       chain:
       - type: ReplaceText
         substitutions:
         - text: hello-world
           with: "#artifactId"
-    - include: [ "manifest.yml" ]
+    - include: [ "src/main/resources/application.properties" ]
+      condition: "#deploymentType == 'none'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: World
+          with: "#message"
+    - include: [ "cloudfoundry/manifest.yml" ]
       condition: "#deploymentType == 'manifest'"
       chain:
       - type: ReplaceText
@@ -47,9 +53,53 @@ engine:
           with: "#artifactId"
         - text: World
           with: "#message"
-    - include: [ "README.md"]
+      - type: RewritePath
+        rewriteTo: "'config/' + #filename"
+    - include: [ "tap/catalog-info.yaml" ]
+      condition: "#deploymentType == 'workload'"
       chain:
       - type: ReplaceText
         substitutions:
         - text: hello-world
           with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'catalog/' + #filename"
+    - include: [ "tap/workload.yaml" ]
+      condition: "#deploymentType == 'workload'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-world
+          with: "#artifactId"
+        - text: World
+          with: "#message"
+      - type: RewritePath
+        rewriteTo: "'config/' + #filename"
+    - name: README
+      type: Combo
+      onConflict: Append
+      sources:
+      - include: [ "README.md" ]
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: hello-world
+            with: "#artifactId"
+      - include: [ "cloudfoundry/DEPLOYING.md" ]
+        condition: "#deploymentType == 'manifest'"
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: hello-world
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"
+      - include: [ "tap/DEPLOYING.md" ]
+        condition: "#deploymentType == 'workload'"
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: hello-world
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"
