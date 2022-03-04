@@ -1,7 +1,8 @@
 accelerator:
   displayName: Hello World
   description: Hello World sample project for Spring Boot on Cloud Foundry
-  iconUrl: https://avatars.githubusercontent.com/u/621746?s=200&v=4
+  # iconUrl: https://avatars.githubusercontent.com/u/621746?s=200&v=4
+  iconUrl: https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/globe-icon.png
   tags:
   - java
   - spring
