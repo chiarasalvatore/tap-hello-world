@@ -6,7 +6,6 @@ metadata:
   tags:
   - java
   - spring
-  - cloud-foundry
   - tanzu
   annotations:
     'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=hello-world'

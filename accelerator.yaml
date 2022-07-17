@@ -1,11 +1,10 @@
 accelerator:
-  displayName: Hello World
+  displayName: Hello World - second edition
   description: Hello World sample project for Spring Boot
   iconUrl: https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/globe-icon.png
   tags:
   - java
   - spring
-  - cloud-foundry
   - tanzu
 
   # options for the UI
