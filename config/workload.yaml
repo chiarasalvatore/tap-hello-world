@@ -5,16 +5,17 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: hello-world
+    apps.tanzu.vmware.com/has-tests: "true"    
 spec:
   env:
   - name: APP_MESSAGE
-    value: World
+    value: It works! Hello World!
   params:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
   source:
     git:
-      url: https://github.com/sample-accelerators/hello-world
+      url: https://github.com/chiarasalvatore/tap-hello-world.git
       ref:
         branch: main
