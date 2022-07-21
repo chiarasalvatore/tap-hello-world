@@ -1,7 +1,7 @@
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
-  name: hello-world
+  name: hello-world-live-update
   namespace: dev
   labels:
     apps.tanzu.vmware.com/workload-type: web
