@@ -9,8 +9,6 @@ metadata:
     apps.tanzu.vmware.com/has-tests: "true"    
 spec:
   env:
-  - name: APP_MESSAGE
-    value: World! Still working!
   params:
   - name: annotations
     value:
