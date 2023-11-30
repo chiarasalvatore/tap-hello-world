@@ -1,3 +1,4 @@
+allow_k8s_contexts('gke_csplayground-354114_europe-west1_demo-inps')
 SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='source-image-location')
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='/Users/schiara/Documents/GitHub/tap-hello-world')
 NAMESPACE = os.getenv("NAMESPACE", default='dev')
