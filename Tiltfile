@@ -21,5 +21,3 @@ k8s_custom_deploy(
 
 k8s_resource('hello-world', port_forwards=["8080:8080"],
     extra_pod_selectors=[{'serving.knative.dev/service': 'hello-world-live-update'}])
-
-allow_k8s_contexts('gke_csplayground-354114_europe-west8_tap')
